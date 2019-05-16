@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+          integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <link rel="icon" type="image/ico" href="http://pollockretail.com/wp-content/uploads/2016/02/Pollock-Icons2-CostSavings.png"/>
+    <title>Wallet : History</title>
+</head>
+<body>
+    <div>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+          <a class="navbar-brand text-info text-muted" href="{% url 'home' %}"> < Home</a>
+          <a class="navbar-brand text-info text-muted" href="{% url 'datadbrefreshed' %}"> Your Data Refreshed</a>
+          <a class="container text-info text-light" id="time"></a>
+            {% if user.is_authenticated %}
+            <a class="text-light">You are logged as {{ user.username }}</a>
+            {% endif %}
+
+
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                  aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"> </span>
+          </button>
+        </nav>
+    </div>
+<br/>
+    <h2 class="text-center"> Your Data History </h2>
+    <br/>
+    <div>
+        <table class="table">
+          <thead class="bg-dark">
+            <tr>
+              <th class="text-light">Name</th>
+              <th class="text-light">Last Price</th>
+              <th class="text-light">Change since Close</th>
+              <th class="text-light">Change since Open</th>
+              <th class="text-light">Isin</th>
+              <th class="text-light"> </th>
+            </tr>
+          </thead>
+
+            <tbody>
+
+            {% for item in mydata %}
+
+                <tr>
+                    <form class="form-inline my-2 my-lg-0" method='POST' action="http://127.0.0.1:8000/blog/delete-row/">
+                    <td class="text-primary"> {{ item.name }}  </td>
+                    <td class="text-dark"> {{ item.lastprice }}  </td>
+                    <td class="text-dark"> {{ item.sinceclose }} </td>
+                    <td class="text-dark"> {{ item.sinceopen }} </td>
+                    <td class="text-dark"> {{ item.isin }}  </td>
+                    <td class="text-dark">
+                        {% csrf_token %}
+                    <button class="btn btn-outline-secondary my-2 my-sm-0" type="submit">Delete</button></td>
+
+                    </form>
+                </tr>
+
+            {% endfor %}
+
+            </tbody>
+
+        </table>
+    </div>
+    <br/>
+</body>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+            integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+            integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+            crossorigin="anonymous"></script>
+</html>

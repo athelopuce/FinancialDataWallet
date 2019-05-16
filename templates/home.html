@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+          integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <title>Financial Data Wallet</title>
+    <link rel="icon" type="image/ico" href="http://pollockretail.com/wp-content/uploads/2016/02/Pollock-Icons2-CostSavings.png"/>
+</head>
+<body>
+    <div class="wp">
+        <img src="{% static 'css/wp_mysite.png' %}" width="100%">
+    </div>
+    <div>
+        <div class="pos-f-t">
+          <div class="collapse" id="navbarToggleExternalContent">
+            <div class="bg-dark p-4">
+              <a class="navbar-brand text-info text-muted" href="{% url 'datadbrefreshed' %}">Your Data Refreshed</a>
+              <a class="navbar-brand text-info text-muted" href="{% url 'mydatahistory' %}">Your Data History</a>
+
+          </div>
+    </div>
+        <nav class="navbar navbar-dark bg-dark">
+            <img src="http://pollockretail.com/wp-content/uploads/2016/02/Pollock-Icons2-CostSavings.png" width="30"
+             height="30" class="d-inline-block align-top" href="{% url 'home' %}" alt="">
+            <a class="navbar-brand text-info text-light" href="https://codingfactory.fr/">Coding Factory by Itescia</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent"
+                    aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+            </button>
+        </nav>
+        </div>
+    </div>
+<div id="accordion">
+    <div class="card">
+        <div class="card-header" id="headingOne">
+            <h5 class="mb-0 ">
+                <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true"
+                        aria-controls="collapseOne">
+                    What is Isin ?
+                </button>
+            </h5>
+        </div>
+
+        <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+            <div class="card-body">
+                International Securities Identification Number<br/>
+                The International Securities Identification Number (ISIN) is a code that uniquely identifies a specific
+                securities issue.<br/> The organization that allocates ISINs in any particular country is the country's
+                    respective National Numbering Agency (NNA).
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header" id="headingTwo">
+            <h5 class="mb-0">
+                <button class="btn btn-link " data-toggle="collapse" data-target="#collapseTwo"
+                        aria-expanded="false" aria-controls="collapseTwo">
+                    Mic Code
+                </button>
+            </h5>
+        </div>
+        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+            <div class="card-body">
+                Also named as Place or Market<br/>
+                The Market Identifier Code (MIC) (ISO 10383) is a unique identification code used <br/>to identify securities
+                trading exchanges, regulated and non-regulated trading markets. The MIC is a four alphanumeric<br/> character
+                code, and is defined in ISO 10383. By the International Organization for Standardization (ISO).
+                For example,<br/>trades that are executed on the US NASDAQ market are identified using MIC code XNAS.
+            </div>
+        </div>
+    </div>
+</div>
+
+    <br />
+
+    {% if row %}
+    <div class="databoard">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th class="text-muted">Name</th>
+              <th class="text-muted">Last Price</th>
+              <th class="text-muted">Change since Close</th>
+              <th class="text-muted">Change since Open</th>
+              <th class="text-muted">Isin</th>
+            </tr>
+          </thead>
+         <tbody>
+
+           <thead>
+            <tr>
+                <td class="text-success"> {{ row.name }} </td>
+                <td class="text-dark"> {{ row.lastprice }} </td>
+                <td class="text-dark"> {{ row.sinceclose }} </td>
+                <td class="text-dark"> {{ row.sinceopen }} </td>
+                <td class="text-dark"> {{ row.isin }} </td>
+              </tr>
+
+          </thead>
+         </tbody>
+         </table>
+            <br/>
+
+    </div>
+    {% endif %}
+    </br>
+    <div>
+
+    </div>
+    <br/>
+    <div>
+        <h4 class="text-left"> Enter Isin and Place to check action of the day </h4> <a class="container text-info text-dark" id="time"></a>
+        <br/>
+        <form class="form-inline my-2 my-lg-0" method='POST' action="http://127.0.0.1:8000/blog/add-isin/">
+            {% csrf_token %}
+            <input class="form-control mr-sm-2" type="search" placeholder="ISIN" aria-label="Search" name="add-isin"
+                   autocomplete="off">
+          <input class="form-control mr-sm-2" type="search" placeholder="MIC Code(place)" aria-label="Search" name="add-place"
+                   autocomplete="off">
+            <button class="btn btn-outline-secondary my-2 my-sm-0" type="submit">Add</button>
+        </form>
+    </div>
+<br/>
+
+
+<script>
+var timeDisplay = document.getElementById("time");
+
+function refreshTime() {
+  var dateString = new Date().toLocaleString("fr-EU", {timeZone: "Europe/Paris"});
+  var formattedString = dateString.replace(", ", " - ");
+  timeDisplay.innerHTML = formattedString;
+}
+
+setInterval(refreshTime, 1000);
+</script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+            integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+            integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+            crossorigin="anonymous"></script>
+</body>
+
+</html>
